@@ -1,0 +1,13 @@
+{
+    "Roles": {
+        "Admin": [
+            "ADMIN"
+        ],
+        "Guest": [],
+        "Gear": [
+            "WOWGEAR_GET"
+        ]
+    },
+    "defaultRole": "Guest",
+    "adminPrivilege": "ADMIN"
+}

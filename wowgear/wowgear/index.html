@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>WoW Armory</title>
+    <link rel="stylesheet" href="/assets/basic.css">
+    <base href="/../../">
+</head>
+
+<body>
+
+    <section id="list" class="list" style="color: white;background-color: black; width: 500px;">
+
+    </section>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script>
+        (async() => {
+            const response = await fetch('characters');
+            const json = await response.json();
+            $("#list").html("");
+            json.forEach(player => {
+                $("#list").append("<p><a href='/armory/" + player + "'>" + player + "</a></p>");
+            })
+        })();
+    </script>
+</body>
+
+</html>
