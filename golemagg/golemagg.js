@@ -55,7 +55,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
         }
 
         if (args.length < 3) {
-            message.reply("Expected command in this format: !remove @user \"Guild Name\"")
+            message.reply("Expected command in this format: !remove @user \"Guild Name\" or !remove @user1 @user2 @user3 \"Guild Name\"")
             return false;
         }
 
@@ -97,7 +97,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
     });
 
     return {
-        name: "Basic bot stuff",
+        name: "Golemagg Module",
         exports: {
 
         },
