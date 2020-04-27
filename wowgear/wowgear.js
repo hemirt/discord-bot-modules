@@ -231,7 +231,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
             message.channel.send("ERR");
         }
 
-    }, [channelMiddleWare("botshit"), permissionMiddleWare('WOWGEAR_GET')])
+    }, [channelMiddleWare(config.wow.channel), permissionMiddleWare('WOWGEAR_GET')])
 
     CommandSystem.addCommand(
         ['!gear', '!getgear'],
@@ -326,35 +326,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
             msg.edit(embed);
 
 
-        }, [channelMiddleWare("botshit"), permissionMiddleWare(['WOWGEAR_GET'])]
-    );
-
-    CommandSystem.addCommand(
-        ['!link', '!getlink'],
-        'WOWGEAR_GETLINK',
-        'gets link for item',
-        async(message, args) => {
-            if (message.channel.type !== 'text') return;
-
-            if (args.length <= 1) {
-                message.channel.send('Missing argument');
-                return false;
-            }
-
-            var qstring = message.content.substr(message.content.indexOf(' ') + 1);
-            var msg = await message.channel.send('Searching for item link' + qstring);
-
-            var item = items.getItemLink(args[1]);
-
-            if (!item) {
-                msg.edit('Failed to find link for ' + qstring);
-                return false;
-            }
-
-            msg.edit("```" + item + "```");
-
-
-        }, [channelMiddleWare("botshit"), permissionMiddleWare(['WOWGEAR_GET'])]
+        }, [channelMiddleWare(config.wow.channel), permissionMiddleWare(['WOWGEAR_GET'])]
     );
 
     CommandSystem.addCommand(
@@ -410,7 +382,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
             await msg.edit("Caching complete")
 
 
-        }, [channelMiddleWare("botshit"), permissionMiddleWare(['WOWGEAR_RECACHE'])]
+        }, [channelMiddleWare(config.wow.channel), permissionMiddleWare(['WOWGEAR_RECACHE'])]
     );
 
     CommandSystem.addCommand(
@@ -454,7 +426,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                 message.channel.send(config.wow.webUrl + ':' + config.wow.webPort + "/" + type + "/" + players.join(","))
             else
                 message.channel.send("Class not found.")
-        }, [channelMiddleWare("botshit") /*, permissionMiddleWare(['WOWGEAR_COMPARE'])*/ ]
+        }, [channelMiddleWare(config.wow.channel)]
     );
 
 
