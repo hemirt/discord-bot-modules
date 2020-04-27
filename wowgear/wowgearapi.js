@@ -38,7 +38,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
     const express = require('express')
     const app = express()
-    const port = 3159
+    const port = config.wow.webPort
 
     app.get('/itemtooltiphtml/:id', async(req, res) => {
         req.params.id = Number(req.params.id);

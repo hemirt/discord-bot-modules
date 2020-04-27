@@ -21,6 +21,8 @@ Modify config.js
 module.exports = {
    ...
     wow: {
+        webUrl: "http://127.0.0.1"
+        webPort: 3159,
         logsChannel: "", //id of channel to automatically post logs
         apiKey: "", //warcraftlogs classic api key
         realm: "", //realm

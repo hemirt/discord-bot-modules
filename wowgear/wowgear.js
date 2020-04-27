@@ -219,7 +219,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
         }
         try {
 
-            await page.goto('http://173.249.47.181:3159/itemtooltiphtml/' + args[1]); // go to site
+            await page.goto(config.wow.webUrl + ':' + config.wow.webPort + '/itemtooltiphtml/' + args[1]); // go to site
             await page.waitForSelector('#screenshotthis'); // wait for the selector to load
             const element = await page.$('#screenshotthis'); // declare a variable with an ElementHandle
             var screen = await element.screenshot();
@@ -320,7 +320,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
             embed.embed.fields.push({
                 "name": "Armory",
-                "value": "http://173.249.47.181:3159/armory/" + gear.characterName
+                "value": config.wow.webUrl + ':' + config.wow.webPort + "/armory/" + gear.characterName
             })
 
             msg.edit(embed);
@@ -451,7 +451,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
             var type = args[2] === "table" ? "table" : "armory";
 
             if (players.length > 0)
-                message.channel.send("http://173.249.47.181:3159/" + type + "/" + players.join(","))
+                message.channel.send(config.wow.webUrl + ':' + config.wow.webPort + "/" + type + "/" + players.join(","))
             else
                 message.channel.send("Class not found.")
         }, [channelMiddleWare("botshit") /*, permissionMiddleWare(['WOWGEAR_COMPARE'])*/ ]
