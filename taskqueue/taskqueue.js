@@ -15,13 +15,15 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
             this.addTask = this.addTask.bind(this);
             this.start = this.start.bind(this);
+            this.cycle = this.cycle.bind(this);
+
+            this.start();
         }
 
         async addTask(taskFc, expectsReturn = false) {
             var task = new Task(taskFc);
 
             this.queue.push(task);
-
             if (expectsReturn) {
                 return await new Promise((resolve, reject) => {
                     eventEmitter.once(task.ts, (result, err) => {
@@ -34,22 +36,25 @@ var moduleFunction = async(client, moduleLoader, config) => {
                 })
             }
 
-            this.start();
             return true;
         }
 
-
         async start() {
-            if (this.working)
-                return false;
+            while (true) {
+                await this.cycle();
+            }
+        }
 
-            this.working = true;
+
+        async cycle() {
+            if (this.queue.length == 0) {
+                await sleep(200);
+            }
 
             var chunks = chunkify(this.queue, this.rate);
             for (var chunk of chunks) {
 
                 var start = Date.now();
-
                 for (const [index, task] of chunk.entries()) {
                     var result = await task.do();
                     this.queue.splice(index, 1);
@@ -58,16 +63,11 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
                 var end = Date.now();
 
-                if ((end - start) < (this.time / chunk.length))
-                    await sleep(this.time - (end - start));
-
+                if ((end - start) < ((this.time * 1000) / chunk.length))
+                    await sleep(this.time * 1000 - (end - start));
 
             }
 
-            this.working = false;
-
-            if (this.queue.length > 0)
-                this.start();
         }
     }
 
