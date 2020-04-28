@@ -17,6 +17,37 @@ This module doesnt require any config.js changes.
 ### Example usage in other modules
 
 This permission system was meant to be used as a middleware for commands module.
+
+Permissions/Roles.json
+```json
+{
+    "Roles": {
+        "Admin": [
+            "ADMIN"
+        ],
+        "Guest": [],
+        "Gear": [
+            "WOWGEAR_GET"
+        ]
+    },
+    "defaultRole": "Guest",
+    "adminPrivilege": "ADMIN"
+}
+```
+
+Permissions/Users.json
+```json
+{ "USER_ID": "ROLE_NAME" }
+```
+
+Commands
+```txt
+Not really good implementation, something in my todo to rework (use exact name, dont use mention)
+!setrole who role
+!takerole who role
+!getrole who
+```
+
 ```js
 
     var { channelMiddleWare, CommandSystem } = moduleLoader.getModule("CMD.JS").exports;
