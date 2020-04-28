@@ -14,12 +14,12 @@ var moduleFunction = async(client, moduleLoader, config) => {
     function doRequest(url) {
         return new Promise(function(resolve, reject) {
             request(url, function(error, res, body) {
-                if (res.statusCode == 200) {
-                    resolve(body);
-                } else if (error) {
+                if (error)
                     throw new Error(error);
-                }
-                resolve(false);
+                else if (res.statusCode == 200)
+                    resolve(body);
+                else
+                    resolve(false);
             });
         });
     }
