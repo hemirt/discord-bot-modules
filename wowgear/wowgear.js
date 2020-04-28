@@ -122,7 +122,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                     return false;
                 }
 
-                var vals = data.filter(log => (log.end > lastLogEnd && log.zone != -1 && log.zone != "-1"))
+                var vals = data.filter(log => (log.end > lastLogEnd))
                 var mappedVals = vals.map(log => [log.id, log.title, log.owner, log.start, log.end, log.zone]);
 
                 if (vals.length > 0) {
