@@ -68,7 +68,6 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
             if (channel) {
                 results.forEach(log => {
-                    console.log("New log uploaded", log.title, log.id)
                     channel.send(log.title + " - https://classic.warcraftlogs.com/reports/" + log.id)
                 });
             }
@@ -122,7 +121,13 @@ var moduleFunction = async(client, moduleLoader, config) => {
                     return false;
                 }
 
-                var vals = data.filter(log => (log.end > lastLogEnd))
+
+                var vals = data.filter(log => {
+                    if (sdata.map(log => log.id).includes(log.id))
+                        return false;
+                    return true;
+                })
+
                 var mappedVals = vals.map(log => [log.id, log.title, log.owner, log.start, log.end, log.zone]);
 
                 if (vals.length > 0) {
