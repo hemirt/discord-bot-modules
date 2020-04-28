@@ -221,7 +221,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                     var serverMemory = Memory.getMemory(message.guild.id);
                     serverMemory.queue.add(video.snippet.channelTitle, video.snippet.title, video.id.videoId);
 
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC']), voiceConnectionMiddleware]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC']), voiceConnectionMiddleware]
             );
 
             this.CommandSystem.addCommand(
@@ -271,7 +271,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                         msg.edit('Failed to play ' + video.snippet.title);
                         return false;
                     }
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC']), voiceConnectionMiddleware]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC']), voiceConnectionMiddleware]
             );
 
             this.CommandSystem.addCommand(
@@ -319,7 +319,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                         msg.edit('Failed to play ' + video.snippet.title);
                         return false;
                     }
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC']), voiceConnectionMiddleware]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC']), voiceConnectionMiddleware]
             );
 
             this.CommandSystem.addCommand(
@@ -353,7 +353,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                     msgtosend += '\nUse !splay number to play song';
                     msgtosend += '```';
                     msg.edit(msgtosend);
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['SEARCH'])]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['SEARCH'])]
             );
 
             this.CommandSystem.addCommand(
@@ -386,7 +386,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                         msg.edit('Failed to play ' + video.snippet.title);
                         return false;
                     }
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['SEARCH']), voiceConnectionMiddleware]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['SEARCH']), voiceConnectionMiddleware]
             );
 
             this.CommandSystem.addCommand(
@@ -420,7 +420,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                     msgtosend += '\nUse !splay number to play song';
                     msgtosend += '```';
                     msg.edit(msgtosend);
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['SEARCH'])]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['SEARCH'])]
             );
 
             this.CommandSystem.addCommand(
@@ -444,7 +444,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
                     await this.playURL(serverMemory.currentMusic, { seek: args[1] }, message.guild.id);
                     await message.channel.send('Seeked to ' + args[1]);
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC'])]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC'])]
             );
 
             this.CommandSystem.addCommand(
@@ -472,7 +472,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                         this.volume = args[1];
                         await message.channel.send('Volume set to ' + args[1]);
                     }
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC'])]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC'])]
             );
 
             this.CommandSystem.addCommand(
@@ -494,7 +494,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                         serverMemory.voiceConnection.player.dispatcher.pause();
                         await message.channel.send('Paused');
                     }
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC'])]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC'])]
             );
 
             this.CommandSystem.addCommand(
@@ -516,7 +516,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                         serverMemory.voiceConnection.player.dispatcher.resume();
                         await message.channel.send('Resumed');
                     }
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC'])]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC'])]
             );
 
             this.CommandSystem.addCommand(
@@ -538,7 +538,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                         await serverMemory.voiceConnection.player.dispatcher.end();
                         await message.channel.send('Stopped');
                     }
-                }, [channelMiddleWare("botshit"), this.permissionMiddleWare(['MUSIC'])]
+                }, [channelMiddleWare(config.music.textChannel), this.permissionMiddleWare(['MUSIC'])]
             );
         }
     }
