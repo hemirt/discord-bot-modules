@@ -1,0 +1,1 @@
+modify config.js if you want to use different folder, folder should have normal read write permissions
