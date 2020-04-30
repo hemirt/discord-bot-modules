@@ -18,94 +18,94 @@
 
         var armoryTemplate = function(id) {
             return `
-    <section class="armory" id="${id}">
-        <section class="armory_left">
-            <div class="item Head item-over">
-                <img src="./assets/Head.png">
-            </div>
+        <section class="armory" id="${id}">
+            <section class="armory_left">
+                <div class="item Head item-over">
+                    <img src="./assets/Head.png">
+                </div>
 
-            <div class="item Neck item-over">
-                <img src="./assets/Neck.png">
-            </div>
+                <div class="item Neck item-over">
+                    <img src="./assets/Neck.png">
+                </div>
 
-            <div class="item Shoulder item-over">
-                <img src="./assets/Shoulder.png">
-            </div>
+                <div class="item Shoulder item-over">
+                    <img src="./assets/Shoulder.png">
+                </div>
 
-            <div class="item Back item-over">
-                <img src="./assets/Back.png">
-            </div>
+                <div class="item Back item-over">
+                    <img src="./assets/Back.png">
+                </div>
 
-            <div class="item Chest item-over">
-                <img src="./assets/Chest.png">
-            </div>
+                <div class="item Chest item-over">
+                    <img src="./assets/Chest.png">
+                </div>
 
-            <div class="item Shirt item-over">
-                <img src="./assets/Shirt.png">
-            </div>
+                <div class="item Shirt item-over">
+                    <img src="./assets/Shirt.png">
+                </div>
 
-            <div class="item Tabard item-over">
-                <img src="./assets/Tabard.png">
-            </div>
+                <div class="item Tabard item-over">
+                    <img src="./assets/Tabard.png">
+                </div>
 
-            <div class="item Wrists item-over">
-                <img src="./assets/Wrists.png">
-            </div>
-        </section>
-
-        <section class="armory_center">
-            <section class="top">
-                Data
+                <div class="item Wrists item-over">
+                    <img src="./assets/Wrists.png">
+                </div>
             </section>
-            <div class="bottom">
-                <div class="item WeaponLeft item-over">
-                    <img src="./assets/WeaponLeft.png">
+
+            <section class="armory_center">
+                <section class="top">
+                    Data
+                </section>
+                <div class="bottom">
+                    <div class="item WeaponLeft item-over">
+                        <img src="./assets/WeaponLeft.png">
+                    </div>
+
+                    <div class="item WeaponRight item-over">
+                        <img src="./assets/WeaponRight.png">
+                    </div>
+
+                    <div class="item Ranged item-over">
+                        <img src="./assets/Ranged.png">
+                    </div>
+                </div>
+            </section>
+
+            <section class="armory_right">
+                <div class="item Hands item-over">
+                    <img src="./assets/Hands.png">
                 </div>
 
-                <div class="item WeaponRight item-over">
-                    <img src="./assets/WeaponRight.png">
+                <div class="item Waist item-over">
+                    <img src="./assets/Waist.png">
                 </div>
 
-                <div class="item Ranged item-over">
-                    <img src="./assets/Ranged.png">
+                <div class="item Legs item-over">
+                    <img src="./assets/Legs.png">
                 </div>
-            </div>
-        </section>
 
-        <section class="armory_right">
-            <div class="item Hands item-over">
-                <img src="./assets/Hands.png">
-            </div>
+                <div class="item Feet item-over">
+                    <img src="./assets/Feet.png">
+                </div>
 
-            <div class="item Waist item-over">
-                <img src="./assets/Waist.png">
-            </div>
+                <div class="item Finger1 item-over">
+                    <img src="./assets/Finger.png">
+                </div>
 
-            <div class="item Legs item-over">
-                <img src="./assets/Legs.png">
-            </div>
+                <div class="item Finger2 item-over">
+                    <img src="./assets/Finger.png">
+                </div>
 
-            <div class="item Feet item-over">
-                <img src="./assets/Feet.png">
-            </div>
+                <div class="item Trinket1 item-over">
+                    <img src="./assets/Trinket.png">
+                </div>
 
-            <div class="item Finger1 item-over">
-                <img src="./assets/Finger.png">
-            </div>
-
-            <div class="item Finger2 item-over">
-                <img src="./assets/Finger.png">
-            </div>
-
-            <div class="item Trinket1 item-over">
-                <img src="./assets/Trinket.png">
-            </div>
-
-            <div class="item Trinket2 item-over">
-                <img src="./assets/Trinket.png">
-            </div>
-        </section>
-    </section>`
+                <div class="item Trinket2 item-over">
+                    <img src="./assets/Trinket.png">
+                </div>
+            </section>
+        </section>`
         }
 
         var tableTemplate = function(id) {
@@ -216,9 +216,9 @@
                 this.getOutput = this.getOutput.bind(this);
                 this.template = template;
                 this.init = this.init.bind(this);
+                this.unbind = [];
 
                 this.init();
-
             }
 
             async init(id) {
@@ -263,6 +263,14 @@
                         top: y,
                     };
                 }
+
+                this.unbind.push(() => {
+                    $("#" + this.base64user + " .item-over").unbind();
+                })
+
+                this.unbind.push(() => {
+                    $("body").unbind();
+                })
 
                 $("#" + this.base64user + " .item-over").mouseenter((event) => {
 
@@ -398,6 +406,9 @@
                         })
                     }).val(id ? id : 0).trigger('change').on("select2:select", e => {
                         console.log("init", e.params.data.id)
+                        this.unbind.forEach(fc => {
+                            fc();
+                        });
                         this.init(e.params.data.id)
                     });
                 }
