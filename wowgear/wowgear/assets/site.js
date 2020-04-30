@@ -222,7 +222,6 @@
             }
 
             async init(id) {
-                console.log("id")
                 if (!this.characterData)
                     await this.getCharacterData();
 
@@ -265,11 +264,11 @@
                 }
 
                 this.unbind.push(() => {
-                    $("#" + this.base64user + " .item-over").unbind();
+                    $("#" + this.base64user + " .item-over").off();
                 })
 
                 this.unbind.push(() => {
-                    $("body").unbind();
+                    $("body").off();
                 })
 
                 $("#" + this.base64user + " .item-over").mouseenter((event) => {
@@ -385,7 +384,7 @@
                         if (!(date in render))
                             render[date] = [];
 
-                        render[date].push({ id: index, text: obj.encounterName });
+                        render[date].push({ id: index, text: obj.encounterName + (obj.nope ? " (No Data) " : ""), disabled: obj.nope ? true : false });
                     })
 
                     var s2 = $('#' + this.base64user + '-selection').select2({
@@ -405,14 +404,12 @@
                             return 0;
                         })
                     }).val(id ? id : 0).trigger('change').on("select2:select", e => {
-                        console.log("init", e.params.data.id)
                         this.unbind.forEach(fc => {
                             fc();
                         });
                         this.init(e.params.data.id)
                     });
                 }
-
 
                 json.forEach(item => {
                     this.itemData[item.id] = item;
@@ -479,7 +476,20 @@
             async getCharacterData() {
                 const response = await fetch('character/' + this.user);
                 const json = await response.json();
-                this.characterData = json;
+                this.characterData = json.map(encounter => {
+                    var filter = encounter.gear.filter(piece => {
+                        if (piece.name == "Unknown Item")
+                            return true;
+                        return false;
+                    })
+
+                    if (filter.length > 5) {
+                        encounter.nope = true;
+                    }
+
+                    return encounter;
+
+                });
                 return json;
             }
 
