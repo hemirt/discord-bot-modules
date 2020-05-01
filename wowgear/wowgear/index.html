@@ -21,9 +21,15 @@
             const response = await fetch('characters');
             const json = await response.json();
             $("#list").html("");
-            json.forEach(player => {
-                $("#list").append("<p><a href='/armory/" + player + "'>" + player + "</a></p>");
+            const classes = [...new Set(json.map(player => player.type))]
+
+            classes.forEach(wowclass => {
+                $("#list").append("<p>" + wowclass + "</p>");
+                json.filter(player => player.type == wowclass).forEach(player => {
+                    $("#list").append("<p><a href='/armory/" + player.name + "'>" + player.name + "</a></p>");
+                });
             })
+
         })();
     </script>
 </body>

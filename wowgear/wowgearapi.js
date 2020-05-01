@@ -38,7 +38,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
     const express = require('express')
     const app = express()
-    const port = config.wow.webPort
+    const port = config.wow.webPort;
 
     app.get('/itemtooltiphtml/:id', async(req, res) => {
         req.params.id = Number(req.params.id);
@@ -99,7 +99,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
         }
 
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < config.wow.lastReports; i++) {
             var report = await GS.getReport(reports[i].id)
             if (report)
                 reportsDL[reports[i].id] = report;
@@ -108,10 +108,10 @@ var moduleFunction = async(client, moduleLoader, config) => {
         var players = []
 
         for (var i in reportsDL) {
-            reportsDL[i].exportedCharacters.map(player => {
-                if (players.indexOf(player.name) === -1) {
-                    players.push(player.name);
-
+            reportsDL[i].friendlies.forEach(player => {
+                if (players.indexOf(player.name) === -1 && !["Pet", "NPC", "Boss", "Unknown"].includes(player.type)) {
+                    if (players.filter(fplayer => fplayer.name == player.name).length == 0)
+                        players.push({ name: player.name, type: player.type });
                 }
             })
         }
@@ -255,8 +255,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
 
             for (var i in data) {
-                console.log("trying to render", data[i].id)
-                await page.goto('http://173.249.47.181:3159/itemtooltiphtml/' + data[i].id);
+                await page.goto(config.wow.webUrl + ':' + config.wow.webPort + '/itemtooltiphtml/' + data[i].id);
 
                 if (!page.$("#screenshotthis"))
                     return false;
