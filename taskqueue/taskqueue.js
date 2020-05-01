@@ -7,8 +7,6 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
     class taskQueue {
         constructor(rate, time) {
-            this.working = false;
-
             this.queue = [];
 
             this.rate = rate;
