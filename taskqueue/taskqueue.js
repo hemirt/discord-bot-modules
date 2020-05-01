@@ -1,8 +1,9 @@
 var moduleFunction = async(client, moduleLoader, config) => {
     var events = require('events');
     var eventEmitter = new events.EventEmitter();
-    var { isArray, chunkify, sleep } = require("./helpers")
+    var { isArray, chunkify, sleep, asyncForEach } = require("./plugins/helpers")
     const uuidv4 = require('uuid/v4');
+    const { performance } = require('perf_hooks');
 
     class taskQueue {
         constructor(rate, time) {
@@ -12,31 +13,56 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
             this.rate = rate;
             this.time = time;
+            this.uphead = 0;
+            this.pastTasks = 0;
 
             this.addTask = this.addTask.bind(this);
             this.start = this.start.bind(this);
             this.cycle = this.cycle.bind(this);
+            this.hookOnce = this.hookOnce.bind(this);
+
 
             this.start();
         }
 
         async addTask(taskFc, expectsReturn = false) {
-            var task = new Task(taskFc);
+            var returnTask = null;
+            if (isArray(taskFc)) {
+                returnTask = [];
+                taskFc.forEach(singletask => {
+                    var task = new Task(singletask);
+                    returnTask.push(task.ts)
+                    this.queue.push(task);
+                });
+            } else {
+                var task = new Task(taskFc);
+                returnTask = task.ts;
+                this.queue.push(task);
+            }
 
-            this.queue.push(task);
             if (expectsReturn) {
-                return await new Promise((resolve, reject) => {
-                    eventEmitter.once(task.ts, (result, err) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(result);
-                        }
-                    })
-                })
+                if (isArray(taskFc)) {
+                    return await Promise.all(returnTask.map(id => {
+                        return this.hookOnce(id);
+                    }))
+                } else {
+                    return await this.hookOnce(returnTask);
+                }
             }
 
             return true;
+        }
+
+        hookOnce(id) {
+            return new Promise((resolve, reject) => {
+                eventEmitter.once(id, (result, err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                })
+            })
         }
 
         async start() {
@@ -47,26 +73,30 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
 
         async cycle() {
-            if (this.queue.length == 0) {
-                await sleep(200);
-            }
+            await asyncForEach(this.queue, async(task, index) => {
+                var a = performance.now();
 
-            var chunks = chunkify(this.queue, this.rate);
-            for (var chunk of chunks) {
+                var result = await task.do();
+                this.pastTasks++;
+                this.queue.splice(index, 1);
+                eventEmitter.emit(task.ts, result, false)
 
-                var start = Date.now();
-                for (const [index, task] of chunk.entries()) {
-                    var result = await task.do();
-                    this.queue.splice(index, 1);
-                    eventEmitter.emit(task.ts, result, false)
+                var b = performance.now();
+                this.uphead += b - a;
+
+                if (this.pastTasks >= this.rate) {
+                    var sleepTime = this.time - this.uphead;
+
+                    this.uphead = 0;
+                    this.pastTasks = 0;
+
+                    if (sleepTime < 5000 && sleepTime > 0)
+                        await sleep(sleepTime);
                 }
 
-                var end = Date.now();
-
-                if ((end - start) < ((this.time * 1000) / chunk.length))
-                    await sleep(this.time * 1000 - (end - start));
-
-            }
+            });
+            if (this.queue.length === 0)
+                await sleep(100)
 
         }
     }
