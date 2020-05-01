@@ -225,11 +225,12 @@
                 if (!this.characterData)
                     await this.getCharacterData();
 
-                if (!id)
+                if (!id) {
                     this.data = this.recentEncounter();
-                else
+                    id = 0;
+                } else {
                     this.data = this.characterData[id];
-
+                }
                 if (!this.data) {
                     $("#" + this.base64user).remove();
                     return false;
@@ -238,13 +239,6 @@
                 var fingerOffset = 1;
                 var trinketOffset = 1;
                 var weaponRight = false;
-
-                /*$("#" + this.base64user + " .top").html(`
-                    ${this.data.characterName} <br>
-                    ${this.data.class} - ${this.data.spec} <br>
-                    Encounter: ${this.data.encounterName} <br>
-                    ${new Date(this.data.startTime)} <br>
-                `)*/
 
                 function offset(elem) {
                     if (!elem) elem = this;
@@ -310,14 +304,6 @@
                                 $(".q0 span:contains('(" + i + ") Set ')").attr("class", "q2")
                         }
                     }
-
-                    /*itemSets.forEach(itemset => {
-                        var setBonus = itemset.getSetBonus();
-                        var items = itemset.items;
-
-                    });*/
-
-
                 });
 
 
@@ -394,14 +380,6 @@
                                 "children": group[1],
                                 "timestamp": new Date(group[0]).getTime() / 1000
                             }
-                        }).sort(function compare(a, b) {
-                            if (a.timestamp > b.timestamp) {
-                                return -1;
-                            }
-                            if (a.timestamp < b.timestamp) {
-                                return 1;
-                            }
-                            return 0;
                         })
                     }).val(id ? id : 0).trigger('change').on("select2:select", e => {
                         this.unbind.forEach(fc => {
@@ -489,6 +467,14 @@
 
                     return encounter;
 
+                }).sort(function compare(a, b) {
+                    if (a.startTime > b.startTime) {
+                        return -1;
+                    }
+                    if (a.startTime < b.startTime) {
+                        return 1;
+                    }
+                    return 0;
                 });
                 return json;
             }
