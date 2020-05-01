@@ -90,7 +90,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                     this.uphead = 0;
                     this.pastTasks = 0;
 
-                    if (sleepTime < 5000 && sleepTime > 0)
+                    if (sleepTime < this.time && sleepTime > 0)
                         await sleep(sleepTime);
                 }
 
