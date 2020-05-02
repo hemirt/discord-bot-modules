@@ -15,11 +15,11 @@ var moduleFunction = async(client, moduleLoader, config) => {
         return new Promise(function(resolve, reject) {
             request(url, function(error, res, body) {
                 if (error)
-                    throw new Error(error);
+                    console.error(error)
                 else if (res.statusCode == 200)
                     resolve(body);
-                else
-                    resolve(false);
+
+                resolve(false);
             });
         });
     }
