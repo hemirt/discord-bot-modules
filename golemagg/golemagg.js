@@ -36,7 +36,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                     return false;
                 }
 
-                guildMember.roles.remove(guildRole)
+                guildMember.roles.add(guildRole)
             });
 
             message.reply("Added a role to the user(s)")
