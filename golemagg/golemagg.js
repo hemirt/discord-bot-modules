@@ -29,17 +29,26 @@ var moduleFunction = async(client, moduleLoader, config) => {
         }
 
         if (message.mentions.users.size > 0) {
+            var uglyHack = false;
             message.mentions.users.forEach(user => {
                 var guildMember = message.guild.member(user);
+                var check = guildMember.roles.cache.filter(role => role.name.includes("[A]") || role.name.includes("[H]") || role.name == "GM or Officer");
 
+                if (check.size > 0) {
+                    message.reply("This user is either member of another guild or is Guild Master / Officer.")
+                    return false;
+                }
                 if (!guildMember) {
                     return false;
                 }
 
                 guildMember.roles.add(guildRole)
+                uglyHack = true;
             });
 
-            message.reply("Added a role to the user(s)")
+
+            if (uglyHack)
+                message.reply("Added a role to the user(s)")
         }
 
     });
@@ -68,17 +77,26 @@ var moduleFunction = async(client, moduleLoader, config) => {
         }
 
         if (message.mentions.users.size > 0) {
+            var uglyHack = false;
             message.mentions.users.forEach(user => {
                 var guildMember = message.guild.member(user);
+                let check = guildMember.roles.cache.filter(role => role.name == "GM or Officer");
+
+                if (check.size > 0) {
+                    message.reply("You cannot remove Guild Master or Officer from the guild")
+                    return false;
+                }
 
                 if (!guildMember) {
                     return false;
                 }
 
                 guildMember.roles.remove(guildRole)
+                uglyHack = true;
             });
 
-            message.reply("Removed a role from the user(s)")
+            if (uglyHack)
+                message.reply("Removed a role from the user(s)")
         }
 
     });
