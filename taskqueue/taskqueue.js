@@ -1,7 +1,7 @@
 var moduleFunction = async(client, moduleLoader, config) => {
     var events = require('events');
     var eventEmitter = new events.EventEmitter();
-    var { isArray, chunkify, sleep, asyncForEach } = require("./plugins/helpers")
+    var { isArray, chunkify, sleep, asyncForEach } = require("./helpers")
     const uuidv4 = require('uuid/v4');
     const { performance } = require('perf_hooks');
 
