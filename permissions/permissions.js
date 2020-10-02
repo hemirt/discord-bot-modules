@@ -23,7 +23,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
                 this.adminPrivilege = jsonData.adminPrivilege;
                 this.defaultRole = jsonData.defaultRole;
             } else
-                throw new Error("ROLES LOADING ERROR")
+                throw new Error("ROLES LOADING ERROR");
         }
 
         getRolePermissions(role) {
@@ -55,7 +55,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
         load() {
             let jsonData = require('./Permissions/Users.json');
             if (!jsonData)
-                throw new Error("USERS LOADING ERROR")
+                throw new Error("USERS LOADING ERROR");
 
 
             for (var i in jsonData) {
