@@ -1,7 +1,7 @@
 # Modular Discord Bot 
 ## Music Queue Module
 
-**This module was originally designed as general queue system, but I am lazy so its just a music queue at the moment.**
+**This module was originally designed as a general queue system, but I am lazy so it's just a music queue at the moment.**
 Simple module providing a queue system for music, not much to say about it.
 
 ### Installation
