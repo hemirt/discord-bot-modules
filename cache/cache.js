@@ -8,7 +8,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
 
         try {
             if (recache)
-                throw new Error("We threw an error to execute error block to force recache, its cheating but it works")
+                throw new Error("We threw an error to execute error block to force recache, its cheating but it works");
 
             var data = fs.readFileSync(filePath, 'utf8');
             return await processData(data);
