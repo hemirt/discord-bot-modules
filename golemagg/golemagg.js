@@ -29,7 +29,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
         }
 
         if (message.mentions.users.size > 0) {
-            var uglyHack = false;
+            var roleAdded = false;
             message.mentions.users.forEach(user => {
                 var guildMember = message.guild.member(user);
                 var check = guildMember.roles.cache.filter(role => role.name.includes("[A]") || role.name.includes("[H]") || role.name == "GM or Officer");
@@ -43,11 +43,11 @@ var moduleFunction = async(client, moduleLoader, config) => {
                 }
 
                 guildMember.roles.add(guildRole)
-                uglyHack = true;
+                roleAdded = true;
             });
 
 
-            if (uglyHack)
+            if (roleAdded)
                 message.reply("Added a role to the user(s)")
         }
 
@@ -77,7 +77,7 @@ var moduleFunction = async(client, moduleLoader, config) => {
         }
 
         if (message.mentions.users.size > 0) {
-            var uglyHack = false;
+            var roleRemoved = false;
             message.mentions.users.forEach(user => {
                 var guildMember = message.guild.member(user);
                 let check = guildMember.roles.cache.filter(role => role.name == "GM or Officer");
@@ -92,10 +92,10 @@ var moduleFunction = async(client, moduleLoader, config) => {
                 }
 
                 guildMember.roles.remove(guildRole)
-                uglyHack = true;
+                roleRemoved = true;
             });
 
-            if (uglyHack)
+            if (roleRemoved)
                 message.reply("Removed a role from the user(s)")
         }
 
